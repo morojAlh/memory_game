@@ -1,6 +1,3 @@
-// console.log("Up and running!");
-
-// var cards = ["queen", "queen", "king", "king"];
 var cards = [{
     rank: "queen",
     suit: "hearts",
@@ -25,30 +22,54 @@ var cards = [{
 
 var cardsInPlay = [];
 
-var checkForMatch = function(){
-    if (cardsInPlay[0] === cardsInPlay[1]) {
-        alert("You found a match!");
-        } else {
-            alert("Sorry, try again.");
-        }
-}
+// var checkForMatch = function(){
+//     // console.log(cards[cardId].cardImage);
+//     // this.setAttribute('src', this.cardImage);
 
-var flipCard = function(cardId){
-    // var cardOne = cards[0];
-    // cardsInPlay.push(cardOne);
-    // console.log('User flipped queen');
+//     if (cardsInPlay[0] === cardsInPlay[1]) {
+//         alert("You found a match!");
+//         } else {
+//             alert("Sorry, try again.");
+//         }
+// }
+
+var flipCard = function() {
+    var cardId = this.getAttribute('data-id');
     
-    // var cardTwo = cards[2];
-    // cardsInPlay.push(cardTwo);
-    // console.log('User flipped king');
-    
-    console.log('User flipped '+ cards[cardId].rank );
-    cardsInPlay.push(cards[cardId].rank);
+    console.log('User flipped '+ cards[cardId].rank);
     console.log(cards[cardId].cardImage );
-    console.log(cards[cardId].suit );
+    console.log(cards[cardId].suit);
 
-    checkForMatch();
+    cardsInPlay.push(cards[cardId].rank);
+
+    this.setAttribute('src', cards[cardId].cardImage);
+
+    if (cardsInPlay.length === 2){
+        if (cardsInPlay[0] === cardsInPlay[1]) {
+            alert("You found a match!");
+            } else {
+                alert("Sorry, try again.");
+            }   
+    }
 }
-flipCard(0);
-flipCard(2);
 
+var reset = function() {
+    
+    cardsInPlay = [];
+    document.getElementById('game-board').innerHTML="";
+    createBoard();
+}
+
+var createBoard = function(){
+    for (var i = 0; i < cards.length; i++) {
+        // Logic here
+        var cardElement = document.createElement('img');
+        cardElement.setAttribute('src', 'images/back.png');
+        cardElement.setAttribute('data-id', i);
+        cardElement.addEventListener('click', flipCard);
+        document.getElementById('game-board').appendChild(cardElement);
+    }
+    var resetButton = document.getElementById('reset');
+    resetButton.addEventListener('click', reset);
+}
+createBoard();
